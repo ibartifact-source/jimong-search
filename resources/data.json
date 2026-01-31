@@ -1,11 +1,5 @@
 [
   {
-    "parent": "A",
-    "prompt": "B",
-    "image_name": "1769832891965_1.png",
-    "id": 1769832894233
-  },
-  {
     "parent": "小動漫",
     "child": "幾米與GPT",
     "grand": "相互嘴砲",
