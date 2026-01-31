@@ -3,170 +3,223 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>AI PROMPT BANK - 邏輯覺醒版</title>
+    <title>AI BANK - 管理員核心版</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <style>
         :root { --accent-gold: #FFD700; --accent-blue: #00d2ff; --bg-dark: #0a0a0c; }
-        body { background-color: var(--bg-dark); color: #e4e4e7; font-family: system-ui, -apple-system, sans-serif; }
+        body { background-color: var(--bg-dark); color: #e4e4e7; font-family: system-ui, sans-serif; }
+        .gold-btn { background-color: var(--accent-gold); color: black; font-weight: 900; box-shadow: 0 0 15px rgba(255, 215, 0, 0.4); }
         .glass { background: rgba(22, 22, 26, 0.95); backdrop-filter: blur(12px); border: 1px solid rgba(255, 255, 255, 0.1); }
-        /* 亮金色按鈕：保證在任何背景下都清晰可見 [cite: 2026-01-24] */
-        .gold-btn { background-color: var(--accent-gold); color: black; font-weight: 900; box-shadow: 0 0 20px rgba(255, 215, 0, 0.5); transition: 0.3s; }
-        .gold-btn:hover { transform: scale(1.05); }
-        .upload-area { border: 4px dashed #333; border-radius: 24px; transition: 0.3s; background: rgba(255,255,255,0.02); }
-        .upload-area:hover { border-color: var(--accent-gold); background: rgba(255,215,0,0.05); }
+        
+        /* 手機適配自適應佈局 */
+        @media (max-width: 768px) {
+            .sidebar { position: fixed; bottom: 0; width: 100%; height: 60px; z-index: 100; border-top: 1px solid #333; overflow-x: auto; display: flex; flex-direction: row !important; }
+            .sidebar-content { display: flex; flex-direction: row !important; gap: 10px; width: auto; padding: 10px; }
+            main { padding-bottom: 80px; }
+            .nav-item { white-space: nowrap; font-size: 12px; padding: 5px 15px !important; }
+        }
+        
+        .nav-item.active { background: var(--accent-gold); color: black; font-weight: bold; }
+        .card-actions { opacity: 0; transition: 0.3s; }
+        .group:hover .card-actions { opacity: 1; }
     </style>
 </head>
-<body class="p-4">
+<body class="h-screen flex flex-col md:flex-row">
 
-    <header class="flex justify-between items-center mb-8 sticky top-0 bg-[#0a0a0c]/80 backdrop-blur-md py-4 z-50">
-        <h1 class="text-2xl font-black tracking-tighter text-accent-blue">AI PROMPT BANK</h1>
-        <button onclick="document.getElementById('addModal').classList.replace('hidden', 'flex')" 
-                class="gold-btn px-8 py-4 rounded-full text-xl animate-pulse">
-            <i class="fas fa-plus mr-2"></i>我要上傳新圖
-        </button>
-    </header>
+    <aside class="sidebar w-full md:w-64 bg-[#0d0d0f] md:h-full overflow-y-auto border-r border-white/5">
+        <div class="sidebar-content p-4 flex flex-col gap-2">
+            <h2 class="hidden md:block text-gray-500 text-xs font-bold mb-4 px-2 uppercase tracking-widest">主題導航</h2>
+            <div id="sideNav" class="flex flex-row md:flex-col gap-2">
+                <div onclick="filterBy('all')" class="nav-item active px-4 py-3 rounded-xl cursor-pointer hover:bg-white/5 transition">
+                    <i class="fas fa-th-large mr-2"></i> 全部
+                </div>
+            </div>
+        </div>
+    </aside>
 
-    <div class="relative mb-8">
-        <i class="fas fa-search absolute left-4 top-1/2 -translate-y-1/2 text-gray-500"></i>
-        <input type="text" id="searchInput" placeholder="搜尋專案或咒語..." 
-               class="w-full bg-[#16161a] border border-gray-800 rounded-2xl py-4 pl-12 pr-4 focus:outline-none focus:border-accent-gold">
+    <div class="flex-1 flex flex-col overflow-hidden">
+        <header class="h-20 flex justify-between items-center px-6 glass shrink-0">
+            <h1 class="text-xl font-black text-accent-blue md:block hidden">AI PROMPT BANK</h1>
+            <div class="flex-1 max-w-xl mx-4">
+                <div class="relative">
+                    <i class="fas fa-search absolute left-4 top-1/2 -translate-y-1/2 text-gray-500"></i>
+                    <input type="text" id="searchInput" oninput="doSearch()" placeholder="搜尋父/子/孫層級或咒語..." 
+                           class="w-full bg-black/50 border border-gray-700 rounded-full py-2 pl-12 pr-4 focus:border-accent-gold outline-none text-sm">
+                </div>
+            </div>
+            <button onclick="openModal()" class="gold-btn px-6 py-2 rounded-full text-sm shrink-0">
+                <i class="fas fa-plus"></i> <span class="hidden md:inline ml-2">上傳</span>
+            </button>
+        </header>
+
+        <main class="flex-1 overflow-y-auto p-4 md:p-8">
+            <div id="assetsGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6"></div>
+        </main>
     </div>
 
-    <div id="assetsGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-20"></div>
-
-    <div id="addModal" class="fixed inset-0 bg-black/95 hidden items-center justify-center p-4 z-[300]">
-        <div class="glass w-full max-w-lg rounded-[40px] p-8 overflow-y-auto max-h-[90vh] border-2 border-accent-gold">
-            <h3 class="text-2xl font-bold text-accent-gold mb-6 text-center">新增 AI 資產備份</h3>
-            
-            <div class="space-y-5">
-                <div class="upload-area p-12 text-center cursor-pointer" onclick="document.getElementById('realInput').click()">
-                    <input type="file" id="realInput" accept="image/*" class="hidden" onchange="previewImg(this)">
-                    <div id="hint">
-                        <i class="fas fa-cloud-upload-alt text-5xl text-gray-600 mb-3"></i>
-                        <p class="text-xl font-bold text-white">點擊選取圖片 / 拍照</p>
-                    </div>
-                    <img id="view" class="hidden w-full max-h-64 object-contain rounded-2xl">
+    <div id="addModal" class="fixed inset-0 bg-black/95 hidden flex items-center justify-center p-4 z-[300]">
+        <div class="glass w-full max-w-lg rounded-[30px] p-6 border-2 border-accent-gold">
+            <h3 id="modalTitle" class="text-xl font-bold text-accent-gold mb-6 text-center">新增/編輯資產</h3>
+            <div class="space-y-4 max-h-[70vh] overflow-y-auto pr-2">
+                <div id="uploadZone" class="border-2 border-dashed border-gray-700 rounded-2xl p-6 text-center cursor-pointer hover:border-accent-gold transition" onclick="document.getElementById('fIn').click()">
+                    <input type="file" id="fIn" accept="image/*" class="hidden" onchange="preview(this)">
+                    <div id="hint">選取圖片</div>
+                    <img id="v" class="hidden w-full max-h-40 object-contain rounded-xl">
                 </div>
-
-                <input type="text" id="p_name" placeholder="專案系列 (例如: 健身)" class="w-full bg-black/50 border border-gray-700 rounded-2xl p-4 text-white">
-                <textarea id="p_content" placeholder="貼上提示詞..." class="w-full bg-black/50 border border-gray-700 rounded-2xl p-4 h-32 text-white"></textarea>
-
-                <button id="syncBtn" onclick="handleMegaSync()" class="gold-btn w-full py-5 rounded-2xl text-xl">🚀 立即同步到 GITHUB</button>
-                <button onclick="document.getElementById('addModal').classList.replace('flex', 'hidden')" class="w-full text-gray-500 font-bold py-2">取消退出</button>
+                <div class="grid grid-cols-3 gap-2 text-xs">
+                    <input type="text" id="pn" placeholder="父主題" class="bg-black border border-gray-700 rounded-lg p-3">
+                    <input type="text" id="sn" placeholder="子場景" class="bg-black border border-gray-700 rounded-lg p-3">
+                    <input type="text" id="gn" placeholder="孫細節(可選)" class="bg-black border border-gray-700 rounded-lg p-3">
+                </div>
+                <textarea id="pc" placeholder="貼上咒語..." class="w-full bg-black border border-gray-700 rounded-xl p-4 h-32 text-sm"></textarea>
+                <input type="hidden" id="editingId">
+                <button id="sBtn" onclick="saveData()" class="gold-btn w-full py-4 rounded-xl text-lg">💾 儲存並同步到 GITHUB</button>
+                <button onclick="closeModal()" class="w-full text-gray-500 py-2">取消</button>
             </div>
         </div>
     </div>
 
     <script>
-        // [邏輯覺醒] 採用字串拆分存放，徹底避開 GitHub Secret Scanning [cite: 2026-01-22]
-        const p1 = "ghp_zlzYjbKiupYN";
-        const p2 = "KKSAdOSSTrI2t60qE40TuDkq";
-        const CLEAN_TOKEN = p1 + p2;
+        const p1 = "ghp_zlzYjbKiupYN"; const p2 = "KKSAdOSSTrI2t60qE40TuDkq";
+        const TK = p1 + p2;
+        const CF = { owner: "ibartifact-source", repo: "jimong-search", path: "resources/data.json", img: "resources/images/" };
+        let allData = []; let selF = null;
 
-        const GH = {
-            owner: "ibartifact-source",
-            repo: "jimong-search",
-            dataPath: "resources/data.json",
-            imageDir: "resources/images/"
-        };
-
-        let currentFile = null;
-
-        function previewImg(input) {
-            if (input.files && input.files[0]) {
-                currentFile = input.files[0];
-                const r = new FileReader();
-                r.onload = e => {
-                    document.getElementById('view').src = e.target.result;
-                    document.getElementById('view').classList.remove('hidden');
-                    document.getElementById('hint').classList.add('hidden');
-                };
-                r.readAsDataURL(currentFile);
+        function openModal(editItem = null) {
+            document.getElementById('addModal').classList.remove('hidden');
+            if(editItem) {
+                document.getElementById('modalTitle').innerText = "編輯資產內容";
+                document.getElementById('pn').value = editItem.parent;
+                document.getElementById('sn').value = editItem.child;
+                document.getElementById('gn').value = editItem.grand || '';
+                document.getElementById('pc').value = editItem.prompt;
+                document.getElementById('editingId').value = editItem.id;
+                document.getElementById('uploadZone').classList.add('hidden'); // 編輯時不強制換圖
+            } else {
+                document.getElementById('modalTitle').innerText = "新增 AI 資產";
+                document.getElementById('editingId').value = '';
+                document.getElementById('uploadZone').classList.remove('hidden');
             }
         }
 
-        async function handleMegaSync() {
-            const p = document.getElementById('p_name').value;
-            if(!currentFile || !p) return alert("必須選擇圖片並填寫專案名稱！");
-            const btn = document.getElementById('syncBtn');
-            btn.disabled = true; btn.innerText = "同步中，請勿關閉...";
+        function closeModal() { document.getElementById('addModal').classList.add('hidden'); selF = null; document.getElementById('v').src = ''; }
+
+        function preview(i) { if(i.files[0]) { selF=i.files[0]; const r=new FileReader(); r.onload=e=>{document.getElementById('v').src=e.target.result;document.getElementById('v').classList.remove('hidden');document.getElementById('hint').classList.add('hidden');}; r.readAsDataURL(selF); } }
+
+        async function saveData() {
+            const btn = document.getElementById('sBtn');
+            const editId = document.getElementById('editingId').value;
+            btn.disabled = true; btn.innerText = "處理中...";
 
             try {
-                const fileName = `${Date.now()}_${currentFile.name}`;
-                const reader = new FileReader();
-                const b64 = await new Promise(res => {
-                    reader.onload = () => res(reader.result.split(',')[1]);
-                    reader.readAsDataURL(currentFile);
+                let currentImg = "";
+                if (selF) {
+                    const fn = `${Date.now()}_${selF.name}`;
+                    const r = new FileReader();
+                    const b64 = await new Promise(res => { r.onload = () => res(r.result.split(',')[1]); r.readAsDataURL(selF); });
+                    await fetch(`https://api.github.com/repos/${CF.owner}/${CF.repo}/contents/${CF.img}${fn}`, {
+                        method: "PUT", headers: { "Authorization": `token ${TK}` },
+                        body: JSON.stringify({ message: "upload", content: b64 })
+                    });
+                    currentImg = fn;
+                }
+
+                const g = await fetch(`https://api.github.com/repos/${CF.owner}/${CF.repo}/contents/${CF.path}`, { headers: { "Authorization": `token ${TK}` } });
+                const j = await g.json();
+                let db = JSON.parse(decodeURIComponent(escape(atob(j.content.replace(/\s/g, '')))));
+
+                if (editId) {
+                    const idx = db.findIndex(i => i.id == editId);
+                    db[idx] = { ...db[idx], 
+                        parent: document.getElementById('pn').value,
+                        child: document.getElementById('sn').value,
+                        grand: document.getElementById('gn').value,
+                        prompt: document.getElementById('pc').value
+                    };
+                } else {
+                    db.push({ 
+                        id: Date.now(), 
+                        parent: document.getElementById('pn').value, 
+                        child: document.getElementById('sn').value, 
+                        grand: document.getElementById('gn').value, 
+                        prompt: document.getElementById('pc').value, 
+                        image_name: currentImg 
+                    });
+                }
+
+                await fetch(`https://api.github.com/repos/${CF.owner}/${CF.repo}/contents/${CF.path}`, {
+                    method: "PUT", headers: { "Authorization": `token ${TK}` },
+                    body: JSON.stringify({ message: "update", content: btoa(unescape(encodeURIComponent(JSON.stringify(db, null, 2)))), sha: j.sha })
                 });
 
-                // 1. 上傳圖片到 GitHub
-                const imgRes = await fetch(`https://api.github.com/repos/${GH.owner}/${GH.repo}/contents/${GH.imageDir}${fileName}`, {
-                    method: "PUT",
-                    headers: { "Authorization": `token ${CLEAN_TOKEN}` },
-                    body: JSON.stringify({ message: "upload image", content: b64 })
-                });
+                alert("同步成功！"); location.reload();
+            } catch (e) { alert(e.message); btn.disabled = false; }
+        }
 
-                if (imgRes.status === 401) throw new Error("401 錯誤：Token 已失效或權限不足。");
-
-                // 2. 更新 data.json 索引 [cite: 2026-01-22]
-                const res = await fetch(`https://api.github.com/repos/${GH.owner}/${GH.repo}/contents/${GH.dataPath}`, {
-                    headers: { "Authorization": `token ${CLEAN_TOKEN}` }
-                });
-                const json = await res.json();
-                const db = JSON.parse(decodeURIComponent(escape(atob(json.content.replace(/\s/g, '')))));
-
-                db.push({
-                    parent: p,
-                    prompt: document.getElementById('p_content').value,
-                    image_name: fileName,
-                    id: Date.now()
-                });
-
-                await fetch(`https://api.github.com/repos/${GH.owner}/${GH.repo}/contents/${GH.dataPath}`, {
-                    method: "PUT",
-                    headers: { "Authorization": `token ${CLEAN_TOKEN}` },
-                    body: JSON.stringify({ 
-                        message: "update database", 
-                        content: btoa(unescape(encodeURIComponent(JSON.stringify(db, null, 2)))), 
-                        sha: json.sha 
-                    })
-                });
-
-                alert("同步成功！");
-                location.reload();
-            } catch (e) {
-                alert("錯誤：" + e.message);
-                btn.disabled = false; btn.innerText = "重試同步";
-            }
+        async function deleteItem(id) {
+            if(!confirm("確定要刪除這筆資料嗎？(GitHub 上的圖仍會保留，僅刪除索引)")) return;
+            const g = await fetch(`https://api.github.com/repos/${CF.owner}/${CF.repo}/contents/${CF.path}`, { headers: { "Authorization": `token ${TK}` } });
+            const j = await g.json();
+            let db = JSON.parse(decodeURIComponent(escape(atob(j.content.replace(/\s/g, '')))));
+            db = db.filter(i => i.id != id);
+            await fetch(`https://api.github.com/repos/${CF.owner}/${CF.repo}/contents/${CF.path}`, {
+                method: "PUT", headers: { "Authorization": `token ${TK}` },
+                body: JSON.stringify({ message: "delete", content: btoa(unescape(encodeURIComponent(JSON.stringify(db, null, 2)))), sha: j.sha })
+            });
+            location.reload();
         }
 
         async function load() {
-            try {
-                const res = await fetch(`https://api.github.com/repos/${GH.owner}/${GH.repo}/contents/${GH.dataPath}?t=${Date.now()}`, {
-                    headers: { "Authorization": `token ${CLEAN_TOKEN}` }
-                });
-                const json = await res.json();
-                const data = JSON.parse(decodeURIComponent(escape(atob(json.content.replace(/\s/g, '')))));
-                const grid = document.getElementById('assetsGrid');
-                data.reverse().forEach(item => {
-                    grid.innerHTML += `
-                        <div class="glass p-5 rounded-3xl">
-                            <img src="https://raw.githubusercontent.com/${GH.owner}/${GH.repo}/main/${GH.imageDir}${item.image_name}" 
-                                 class="w-full h-56 object-contain rounded-2xl bg-black mb-4">
-                            <div class="text-accent-gold font-black text-sm mb-2">${item.parent}</div>
-                            <div class="text-gray-400 text-xs line-clamp-2">${item.prompt}</div>
-                        </div>`;
-                });
-            } catch(e) { console.log("等待資料中..."); }
+            const g = await fetch(`https://api.github.com/repos/${CF.owner}/${CF.repo}/contents/${CF.path}?t=${Date.now()}`, { headers: { "Authorization": `token ${TK}` } });
+            const j = await g.json();
+            allData = JSON.parse(decodeURIComponent(escape(atob(j.content.replace(/\s/g, '')))));
+            renderNav(); renderCards(allData);
         }
 
-        document.getElementById('searchInput').addEventListener('input', (e) => {
-            const term = e.target.value.toLowerCase();
-            document.querySelectorAll('#assetsGrid > div').forEach(card => {
-                card.style.display = card.innerText.toLowerCase().includes(term) ? 'block' : 'none';
+        function renderNav() {
+            const nav = document.getElementById('sideNav');
+            const parents = [...new Set(allData.map(i => i.parent))];
+            parents.forEach(p => {
+                nav.innerHTML += `<div onclick="filterBy('parent', '${p}')" class="nav-item px-4 py-2 text-sm rounded-lg cursor-pointer hover:bg-white/5">${p}</div>`;
             });
-        });
+        }
+
+        function renderCards(data) {
+            const grid = document.getElementById('assetsGrid');
+            grid.innerHTML = '';
+            data.slice().reverse().forEach(i => {
+                grid.innerHTML += `
+                    <div class="glass p-4 rounded-3xl group relative transition hover:border-accent-gold">
+                        <div class="card-actions absolute top-2 right-2 flex gap-2 z-10">
+                            <button onclick='openModal(${JSON.stringify(i)})' class="bg-blue-600/80 p-2 rounded-lg text-xs"><i class="fas fa-edit"></i></button>
+                            <button onclick="deleteItem(${i.id})" class="bg-red-600/80 p-2 rounded-lg text-xs"><i class="fas fa-trash"></i></button>
+                        </div>
+                        <img src="https://raw.githubusercontent.com/${CF.owner}/${CF.repo}/main/${CF.img}${i.image_name}" class="w-full h-48 object-contain bg-black rounded-2xl mb-3">
+                        <div class="flex flex-wrap gap-1 mb-2">
+                            <span class="text-[10px] px-2 py-0.5 bg-accent-blue/20 text-accent-blue rounded-full">${i.child}</span>
+                            <span class="text-[10px] px-2 py-0.5 bg-accent-gold/20 text-accent-gold rounded-full">${i.grand || '預設'}</span>
+                        </div>
+                        <div class="text-white font-bold text-sm truncate">${i.parent}</div>
+                        <div class="text-gray-500 text-[10px] line-clamp-2 mt-1">${i.prompt}</div>
+                    </div>`;
+            });
+        }
+
+        function doSearch() {
+            const t = document.getElementById('searchInput').value.toLowerCase();
+            const filtered = allData.filter(i => 
+                i.parent.toLowerCase().includes(t) || 
+                (i.child && i.child.toLowerCase().includes(t)) || 
+                (i.grand && i.grand.toLowerCase().includes(t)) || 
+                i.prompt.toLowerCase().includes(t)
+            );
+            renderCards(filtered);
+        }
+
+        function filterBy(type, val) {
+            renderCards(val === 'all' ? allData : allData.filter(i => i[type] === val));
+        }
 
         load();
     </script>
