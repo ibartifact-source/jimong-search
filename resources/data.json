@@ -28,5 +28,13 @@
     "grand": "",
     "prompt": "CC",
     "image_name": "1769837248099_03.jpg"
+  },
+  {
+    "id": 1769837596436,
+    "parent": "智障",
+    "child": "幾米與GPT",
+    "grand": "相互嘴砲",
+    "prompt": "SS",
+    "image_name": "1769837593796_03.jpg.png"
   }
 ]
