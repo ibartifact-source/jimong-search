@@ -3,240 +3,176 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>AI PROMPT BANK - 全自動同步版</title>
+    <title>AI PROMPT BANK - 邏輯覺醒完整版</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <style>
-        :root { --bg-dark: #0a0a0c; --card-dark: #16161a; --accent-blue: #00d2ff; --accent-gold: #ffb300; }
-        body { background-color: var(--bg-dark); color: #e4e4e7; font-family: system-ui, -apple-system, sans-serif; overflow-x: hidden; }
+        :root { --accent-gold: #FFD700; --accent-blue: #00d2ff; --bg-dark: #0a0a0c; }
+        body { background-color: var(--bg-dark); color: #e4e4e7; font-family: system-ui, -apple-system, sans-serif; }
         .glass { background: rgba(22, 22, 26, 0.95); backdrop-filter: blur(12px); border: 1px solid rgba(255, 255, 255, 0.1); }
-        #sidebar { position: fixed; inset: 0 0 0 0; width: 280px; z-index: 250; transition: transform 0.3s ease; }
-        .sidebar-hidden { transform: translateX(-100%); }
-        .asset-card { background: var(--card-dark); border-radius: 12px; border: 1px solid rgba(255, 255, 255, 0.05); overflow: hidden; }
-        .preview-box { width: 100%; height: 220px; background: #000; display: flex; align-items: center; justify-content: center; overflow: hidden; }
-        .preview-box img { width: 100%; height: 100%; object-fit: contain; }
-        .icon-btn { width: 45px; height: 45px; display: flex; align-items: center; justify-content: center; border-radius: 12px; background: #1e1e24; border: 1px solid #333; }
+        /* 亮金色按鈕，絕對看得到 */
+        .gold-btn { background-color: var(--accent-gold); color: black; font-weight: 900; box-shadow: 0 0 20px rgba(255, 215, 0, 0.5); transition: 0.3s; }
+        .gold-btn:hover { transform: scale(1.05); }
+        .upload-area { border: 4px dashed #333; border-radius: 24px; transition: 0.3s; background: rgba(255,255,255,0.02); }
+        .upload-area:hover { border-color: var(--accent-gold); background: rgba(255,215,0,0.05); }
         #toast { position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%); background: var(--accent-blue); color: black; padding: 12px 24px; border-radius: 30px; font-weight: bold; display: none; z-index: 1000; }
-        input, textarea, select { background: rgba(0,0,0,0.4) !important; border: 1px solid #333 !important; color: white !important; }
     </style>
 </head>
 <body class="p-4">
 
     <div id="toast">操作成功</div>
 
-    <header class="flex justify-between items-center mb-6 sticky top-0 bg-[#0a0a0c]/90 backdrop-blur-md py-3 z-50">
-        <div class="flex items-center gap-3">
-            <button onclick="toggleSidebar()" class="icon-btn text-accent-blue"><i class="fas fa-bars"></i></button>
-            <h1 class="text-xl font-bold tracking-wider">AI <span class="text-accent-blue">PROMPT</span> BANK</h1>
-        </div>
-        <button onclick="showAddModal()" class="icon-btn text-accent-gold"><i class="fas fa-plus"></i></button>
+    <header class="flex justify-between items-center mb-8 sticky top-0 bg-[#0a0a0c]/80 backdrop-blur-md py-4 z-50">
+        <h1 class="text-2xl font-black tracking-tighter text-accent-blue">AI PROMPT BANK</h1>
+        <button onclick="document.getElementById('addModal').classList.replace('hidden', 'flex')" 
+                class="gold-btn px-8 py-4 rounded-full text-xl">
+            <i class="fas fa-plus mr-2"></i>我要上傳新圖
+        </button>
     </header>
 
     <div class="relative mb-8">
         <i class="fas fa-search absolute left-4 top-1/2 -translate-y-1/2 text-gray-500"></i>
-        <input type="text" id="searchInput" placeholder="全域關鍵字搜尋..." class="w-full rounded-xl py-3 pl-12 pr-4 focus:border-accent-blue outline-none">
+        <input type="text" id="searchInput" placeholder="搜尋專案或咒語..." 
+               class="w-full bg-[#16161a] border border-gray-800 rounded-2xl py-4 pl-12 pr-4 focus:outline-none focus:border-accent-gold">
     </div>
 
     <div id="assetsGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-20"></div>
 
-    <div id="sidebar" class="glass p-6 sidebar-hidden">
-        <div class="flex justify-between items-center mb-8">
-            <h2 class="text-lg font-bold text-accent-gold">專案分類</h2>
-            <button onclick="toggleSidebar()" class="text-gray-400 p-2"><i class="fas fa-times text-xl"></i></button>
-        </div>
-        <div id="categoryNav" class="space-y-6"></div>
-    </header>
-
     <div id="addModal" class="fixed inset-0 bg-black/95 hidden items-center justify-center p-4 z-[300]">
-        <div class="glass w-full max-w-lg rounded-2xl p-6 overflow-y-auto max-h-[90vh]">
-            <h3 class="text-xl font-bold text-accent-blue mb-4">新增 AI 資產備份</h3>
+        <div class="glass w-full max-w-lg rounded-[40px] p-8 overflow-y-auto max-h-[90vh] border-2 border-accent-gold">
+            <h3 class="text-2xl font-bold text-accent-gold mb-6 text-center">新增 AI 資產備份</h3>
             
-            <div class="space-y-4">
-                <div class="border-2 border-dashed border-gray-700 rounded-xl p-4 text-center relative" id="dropZone">
-                    <input type="file" id="fileInput" accept="image/*" class="absolute inset-0 opacity-0 cursor-pointer" onchange="handleFileSelect(this)">
-                    <div id="uploadHint">
-                        <i class="fas fa-cloud-upload-alt text-3xl text-gray-500 mb-2"></i>
-                        <p class="text-sm text-gray-400">點擊或拖入圖片 (手機可直接拍照)</p>
+            <div class="space-y-5">
+                <div class="upload-area p-12 text-center cursor-pointer" onclick="document.getElementById('realInput').click()">
+                    <input type="file" id="realInput" accept="image/*" class="hidden" onchange="previewImg(this)">
+                    <div id="hint">
+                        <i class="fas fa-cloud-upload-alt text-5xl text-gray-600 mb-3"></i>
+                        <p class="text-xl font-bold text-white">點擊選取圖片 / 拍照</p>
                     </div>
-                    <img id="tempPreview" class="hidden w-full max-h-48 object-contain rounded-lg">
+                    <img id="view" class="hidden w-full max-h-64 object-contain rounded-2xl">
                 </div>
 
-                <div class="grid grid-cols-2 gap-2">
-                    <input type="text" id="parent" placeholder="專案系列 (如: 健身)" class="p-3 rounded-lg text-sm">
-                    <input type="text" id="child" placeholder="場景 (如: 室內)" class="p-3 rounded-lg text-sm">
+                <div class="grid grid-cols-2 gap-3">
+                    <input type="text" id="p_name" placeholder="專案 (如: 健身)" class="bg-black/50 border border-gray-700 rounded-2xl p-4 text-white">
+                    <input type="text" id="c_name" placeholder="場景 (如: 戶外)" class="bg-black/50 border border-gray-700 rounded-2xl p-4 text-white">
                 </div>
+                
+                <textarea id="p_content" placeholder="貼上即夢 AI 提示詞..." class="w-full bg-black/50 border border-gray-700 rounded-2xl p-4 h-32 text-white"></textarea>
 
-                <textarea id="prompt" placeholder="貼上 Prompt 提示詞..." class="w-full p-3 h-32 rounded-lg text-sm"></textarea>
-
-                <div class="grid grid-cols-2 gap-2">
-                    <input type="text" id="pcPath" placeholder="PC 路徑備註" class="p-2 rounded-lg text-[10px]">
-                    <input type="text" id="mobilePath" placeholder="手機路徑備註" class="p-2 rounded-lg text-[10px]">
-                </div>
-
-                <button id="saveBtn" onclick="startFullSync()" class="w-full bg-accent-blue text-black font-black py-4 rounded-xl shadow-lg shadow-blue-500/20">一鍵自動同步至 GITHUB</button>
-                <button onclick="hideAddModal()" class="w-full text-gray-500 text-sm py-2">取消</button>
+                <button id="syncBtn" onclick="handleMegaSync()" class="gold-btn w-full py-5 rounded-2xl text-xl">🚀 立即同步到 GITHUB</button>
+                <button onclick="document.getElementById('addModal').classList.replace('flex', 'hidden')" class="w-full text-gray-500 font-bold py-2">取消退出</button>
             </div>
         </div>
     </div>
 
     <script>
-        const GH_CONFIG = {
-            token: "你的_GITHUB_TOKEN", // 必須填寫
+        const GH = {
+            token: "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", // 已自動填入
             owner: "ibartifact-source",
             repo: "jimong-search",
             dataPath: "resources/data.json",
             imageDir: "resources/images/"
         };
 
-        let db_data = [];
-        let selectedFile = null;
+        let currentFile = null;
 
-        // 初始化：讀取資料庫
-        async function initDB() {
+        function previewImg(input) {
+            if (input.files && input.files[0]) {
+                currentFile = input.files[0];
+                const r = new FileReader();
+                r.onload = e => {
+                    document.getElementById('view').src = e.target.result;
+                    document.getElementById('view').classList.remove('hidden');
+                    document.getElementById('hint').classList.add('hidden');
+                };
+                r.readAsDataURL(currentFile);
+            }
+        }
+
+        async function handleMegaSync() {
+            const p = document.getElementById('p_name').value;
+            if(!currentFile || !p) return alert("必須選擇圖片並填寫專案名稱！");
+
+            const btn = document.getElementById('syncBtn');
+            btn.disabled = true; btn.innerText = "同步中，請勿關閉...";
+
             try {
-                const cleanToken = GH_CONFIG.token.replace(/[^\x00-\x7F]/g, "").trim();
-                const res = await fetch(`https://api.github.com/repos/${GH_CONFIG.owner}/${GH_CONFIG.repo}/contents/${GH_CONFIG.dataPath}?nocache=${Date.now()}`, {
-                    headers: { "Authorization": `token ${cleanToken}` }
+                const fileName = `${Date.now()}_${currentFile.name}`;
+                
+                // 1. 圖片轉 Base64 並上傳
+                const reader = new FileReader();
+                const b64 = await new Promise(res => {
+                    reader.onload = () => res(reader.result.split(',')[1]);
+                    reader.readAsDataURL(currentFile);
+                });
+
+                await fetch(`https://api.github.com/repos/${GH.owner}/${GH.repo}/contents/${GH.imageDir}${fileName}`, {
+                    method: "PUT",
+                    headers: { "Authorization": `token ${GH.token}` },
+                    body: JSON.stringify({ message: "upload image", content: b64 })
+                });
+
+                // 2. 更新 JSON 資料庫索引 [cite: 2026-01-22]
+                const res = await fetch(`https://api.github.com/repos/${GH.owner}/${GH.repo}/contents/${GH.dataPath}`, {
+                    headers: { "Authorization": `token ${GH.token}` }
                 });
                 const json = await res.json();
-                const raw = atob(json.content.replace(/\s/g, ''));
-                db_data = JSON.parse(decodeURIComponent(escape(raw)));
-                renderAll();
-            } catch (e) {
-                console.log("資料庫初始化中...");
-                db_data = [];
-            }
-        }
+                const db = JSON.parse(decodeURIComponent(escape(atob(json.content.replace(/\s/g, '')))));
 
-        // 渲染畫面
-        function renderAll(filterStr = "") {
-            const grid = document.getElementById('assetsGrid');
-            const nav = document.getElementById('categoryNav');
-            grid.innerHTML = ""; nav.innerHTML = "";
-            const structure = {};
-            const search = filterStr.toLowerCase();
-
-            db_data.slice().reverse().forEach(item => {
-                if (!structure[item.parent]) structure[item.parent] = new Set();
-                structure[item.parent].add(item.child);
-
-                if (item.prompt.toLowerCase().includes(search) || item.parent.toLowerCase().includes(search)) {
-                    const imgUrl = `https://raw.githubusercontent.com/${GH_CONFIG.owner}/${GH_CONFIG.repo}/main/${GH_CONFIG.imageDir}${item.image_name}`;
-                    grid.innerHTML += `
-                        <div class="asset-card">
-                            <div class="preview-box"><img src="${imgUrl}" loading="lazy" onerror="this.src='https://placehold.co/400?text=Loading...'"></div>
-                            <div class="p-4">
-                                <div class="text-[10px] text-accent-gold font-bold mb-1">${item.parent} / ${item.child}</div>
-                                <p class="text-xs text-gray-400 line-clamp-2 mb-4">${item.prompt}</p>
-                                <div class="flex gap-2">
-                                    <button onclick="copyText('${item.prompt.replace(/'/g, "\\'")}')" class="flex-1 bg-gray-800 py-2 rounded-lg text-[10px] font-bold">複製 PROMPT</button>
-                                    <button onclick="window.open('${imgUrl}')" class="icon-btn text-xs"><i class="fas fa-external-link-alt"></i></button>
-                                </div>
-                            </div>
-                        </div>`;
-                }
-            });
-
-            for (let p in structure) {
-                nav.innerHTML += `<div class="mb-4">
-                    <h3 class="text-xs font-bold text-gray-500 mb-2">${p}</h3>
-                    <div class="flex flex-wrap gap-2">${Array.from(structure[p]).map(c => `<button onclick="setFilter('${c}')" class="bg-blue-500/10 text-accent-blue px-3 py-1 rounded text-[10px]">${c}</button>`).join('')}</div>
-                </div>`;
-            }
-        }
-
-        // 選擇檔案預覽
-        function handleFileSelect(input) {
-            if (input.files && input.files[0]) {
-                selectedFile = input.files[0];
-                const reader = new FileReader();
-                reader.onload = e => {
-                    document.getElementById('tempPreview').src = e.target.result;
-                    document.getElementById('tempPreview').classList.remove('hidden');
-                    document.getElementById('uploadHint').classList.add('hidden');
-                };
-                reader.readAsDataURL(selectedFile);
-            }
-        }
-
-        // --- 核心：全自動同步邏輯 [cite: 2026-01-24] ---
-        async function startFullSync() {
-            const parent = document.getElementById('parent').value.trim();
-            const prompt = document.getElementById('prompt').value.trim();
-            if (!selectedFile || !parent || !prompt) return alert("請選擇圖片並填寫專案與 Prompt");
-
-            const saveBtn = document.getElementById('saveBtn');
-            saveBtn.disabled = true; saveBtn.innerText = "正在上傳圖片至 GitHub...";
-
-            try {
-                const cleanToken = GH_CONFIG.token.replace(/[^\x00-\x7F]/g, "").trim();
-                const fileName = `${Date.now()}_${selectedFile.name}`;
-
-                // 1. 上傳圖片實體
-                const reader = new FileReader();
-                const base64Promise = new Promise(resolve => {
-                    reader.onload = () => resolve(reader.result.split(',')[1]);
-                    reader.readAsDataURL(selectedFile);
-                });
-                const base64Data = await base64Promise;
-
-                await fetch(`https://api.github.com/repos/${GH_CONFIG.owner}/${GH_CONFIG.repo}/contents/${GH_CONFIG.imageDir}${fileName}`, {
-                    method: "PUT",
-                    headers: { "Authorization": `token ${cleanToken}`, "Content-Type": "application/json" },
-                    body: JSON.stringify({ message: `Upload image: ${fileName}`, content: base64Data })
-                });
-
-                // 2. 更新 data.json 索引
-                saveBtn.innerText = "正在更新資料庫索引...";
-                const res = await fetch(`https://api.github.com/repos/${GH_CONFIG.owner}/${GH_CONFIG.repo}/contents/${GH_CONFIG.dataPath}`, {
-                    headers: { "Authorization": `token ${cleanToken}` }
-                });
-                const fileJson = await res.json();
-                const currentDB = JSON.parse(decodeURIComponent(escape(atob(fileJson.content.replace(/\s/g, '')))));
-
-                currentDB.push({
-                    id: Date.now(),
-                    parent, 
-                    child: document.getElementById('child').value.trim(),
-                    prompt,
+                db.push({
+                    parent: p,
+                    child: document.getElementById('c_name').value,
+                    prompt: document.getElementById('p_content').value,
                     image_name: fileName,
-                    pc_path: document.getElementById('pcPath').value,
-                    mobile_path: document.getElementById('mobilePath').value
+                    id: Date.now()
                 });
 
-                const updatedContent = btoa(unescape(encodeURIComponent(JSON.stringify(currentDB, null, 2))));
-                await fetch(`https://api.github.com/repos/${GH_CONFIG.owner}/${GH_CONFIG.repo}/contents/${GH_CONFIG.dataPath}`, {
+                await fetch(`https://api.github.com/repos/${GH.owner}/${GH.repo}/contents/${GH.dataPath}`, {
                     method: "PUT",
-                    headers: { "Authorization": `token ${cleanToken}`, "Content-Type": "application/json" },
-                    body: JSON.stringify({ message: `Update DB: ${fileName}`, content: updatedContent, sha: fileJson.sha })
+                    headers: { "Authorization": `token ${GH.token}` },
+                    body: JSON.stringify({ 
+                        message: "update database", 
+                        content: btoa(unescape(encodeURIComponent(JSON.stringify(db, null, 2)))), 
+                        sha: json.sha 
+                    })
                 });
 
-                showToast("全自動同步成功！");
-                hideAddModal();
-                initDB();
+                alert("同步成功！頁面即將重整。");
+                location.reload();
             } catch (e) {
-                alert("同步失敗，請確認 Token 權限是否包含 Repo Write");
-                console.error(e);
-            } finally {
-                saveBtn.disabled = false; saveBtn.innerText = "一鍵自動同步至 GITHUB";
+                alert("出錯了！請檢查網路或 Token 是否過期。");
+                btn.disabled = false; btn.innerText = "重試同步";
             }
         }
 
-        // 工具函數
-        window.toggleSidebar = () => document.getElementById('sidebar').classList.toggle('sidebar-hidden');
-        window.showAddModal = () => {
-            document.getElementById('addModal').classList.replace('hidden', 'flex');
-            document.getElementById('tempPreview').classList.add('hidden');
-            document.getElementById('uploadHint').classList.remove('hidden');
-            selectedFile = null;
-        };
-        window.hideAddModal = () => document.getElementById('addModal').classList.replace('flex', 'hidden');
-        window.copyText = (t) => { navigator.clipboard.writeText(t); showToast("PROMPT 已複製"); };
-        window.showToast = (m) => { const t = document.getElementById('toast'); t.innerText=m; t.style.display='block'; setTimeout(()=>t.style.display='none',2000); };
-        window.setFilter = (s) => { document.getElementById('searchInput').value = s; renderAll(s); toggleSidebar(); };
-        document.getElementById('searchInput').oninput = (e) => renderAll(e.target.value);
+        async function load() {
+            try {
+                const res = await fetch(`https://api.github.com/repos/${GH.owner}/${GH.repo}/contents/${GH.dataPath}?t=${Date.now()}`, {
+                    headers: { "Authorization": `token ${GH.token}` }
+                });
+                const json = await res.json();
+                const data = JSON.parse(decodeURIComponent(escape(atob(json.content.replace(/\s/g, '')))));
+                const grid = document.getElementById('assetsGrid');
+                data.reverse().forEach(item => {
+                    grid.innerHTML += `
+                        <div class="glass p-5 rounded-3xl">
+                            <img src="https://raw.githubusercontent.com/${GH.owner}/${GH.repo}/main/${GH.imageDir}${item.image_name}" 
+                                 class="w-full h-56 object-contain rounded-2xl bg-black mb-4">
+                            <div class="text-accent-gold font-black text-sm mb-2">${item.parent} / ${item.child}</div>
+                            <div class="text-gray-400 text-xs line-clamp-2">${item.prompt}</div>
+                        </div>`;
+                });
+            } catch(e) { console.log("等待初次資料同步..."); }
+        }
 
-        initDB();
+        document.getElementById('searchInput').addEventListener('input', (e) => {
+            const term = e.target.value.toLowerCase();
+            document.querySelectorAll('#assetsGrid > div').forEach(card => {
+                card.style.display = card.innerText.toLowerCase().includes(term) ? 'block' : 'none';
+            });
+        });
+
+        load();
     </script>
 </body>
 </html>
