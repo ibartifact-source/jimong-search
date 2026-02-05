@@ -36,5 +36,13 @@
     "grand": "月台對話",
     "prompt": "提示詞是幾米生成的",
     "image_name": "1770256974700_Gemini_Generated_Image_p6eizop6eizop6ei.png"
+  },
+  {
+    "id": 1770257007489,
+    "parent": "小動漫",
+    "child": "幾米與GPT",
+    "grand": "月台對話",
+    "prompt": "提示詞是幾米生成的",
+    "image_name": "1770257003640_Gemini_Generated_Image_qx85q9qx85q9qx85.png"
   }
 ]
