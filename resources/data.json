@@ -50,7 +50,7 @@
     "parent": "小動漫",
     "child": "幾米與GPT",
     "grand": "月台對話",
-    "prompt": "",
+    "prompt": "提示詞是幾米生成的",
     "image_name": "1770257024789_Gemini_Generated_Image_t60tc7t60tc7t60t.png"
   }
 ]
