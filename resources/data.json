@@ -62,13 +62,5 @@
     "grand": "",
     "prompt": "55888",
     "image_name": "1780556481128_Gemini_Generated_Image_.png"
-  },
-  {
-    "id": 1780557896753,
-    "parent": "1234",
-    "child": "阿公家擲茭",
-    "grand": "月台對話",
-    "prompt": "測試測試",
-    "image_name": "1780557890505_1000280090.png"
   }
 ]
