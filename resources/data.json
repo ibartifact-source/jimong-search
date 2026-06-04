@@ -49,9 +49,9 @@
   },
   {
     "id": 1770349849975,
-    "parent": "小動漫",
+    "parent": "1234",
     "child": "幾米與GPT",
-    "grand": "日式月台對話",
+    "grand": "月台對話",
     "prompt": "提示詞是幾米生成的",
     "image_name": "1770349845021_Gemini_Generated_Image_4jhjj44jhjj44jhj.png"
   },
