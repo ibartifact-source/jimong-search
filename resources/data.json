@@ -48,14 +48,6 @@
     "image_name": "1770257640163_D2.png"
   },
   {
-    "id": 1770349849975,
-    "parent": "1234",
-    "child": "幾米與GPT",
-    "grand": "月台對話",
-    "prompt": "提示詞是幾米生成的",
-    "image_name": "1770349845021_Gemini_Generated_Image_4jhjj44jhjj44jhj.png"
-  },
-  {
     "id": 1780559719075,
     "parent": "神的機能飲料",
     "child": "全自動生產線",
