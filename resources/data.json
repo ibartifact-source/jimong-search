@@ -54,5 +54,13 @@
     "grand": "日式月台對話",
     "prompt": "提示詞是幾米生成的",
     "image_name": "1770349845021_Gemini_Generated_Image_4jhjj44jhjj44jhj.png"
+  },
+  {
+    "id": 1780539624226,
+    "parent": "1234",
+    "child": "阿公家擲茭",
+    "grand": "月台對話",
+    "prompt": "5678",
+    "image_name": "1780539615906_Gemini_Generated_Image_.png"
   }
 ]
