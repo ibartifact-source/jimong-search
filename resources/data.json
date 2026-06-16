@@ -2349,5 +2349,14 @@
     "prompt": "",
     "image_name": "1781595883230_1000279784.png",
     "repo_name": ""
+  },
+  {
+    "id": 1781596015603,
+    "parent": "神的後花園",
+    "child": "Manvis 系統",
+    "grand": "底層邏輯企劃",
+    "prompt": "",
+    "image_name": "1781596008007_1000279783.png",
+    "repo_name": ""
   }
 ]
