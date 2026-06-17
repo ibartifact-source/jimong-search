@@ -2853,5 +2853,14 @@
     "prompt": "",
     "image_name": "1781670988867_1000279648.png",
     "repo_name": "jimong-images-v2"
+  },
+  {
+    "id": 1781671129873,
+    "parent": "神的機能飲料",
+    "child": "台灣市場",
+    "grand": "台中實驗本舖",
+    "prompt": "",
+    "image_name": "1781671118205_1000279640.png",
+    "repo_name": "jimong-images-v2"
   }
 ]
