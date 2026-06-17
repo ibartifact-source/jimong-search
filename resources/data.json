@@ -2610,5 +2610,14 @@
     "prompt": "",
     "image_name": "1781667640158_1000279759.png",
     "repo_name": "jimong-images-v2"
+  },
+  {
+    "id": 1781667835101,
+    "parent": "神的機能飲料",
+    "child": "底層邏輯",
+    "grand": "配方",
+    "prompt": "",
+    "image_name": "1781667823417_1000279758.png",
+    "repo_name": ""
   }
 ]
