@@ -2962,5 +2962,14 @@
     "prompt": "",
     "image_name": "1781672851281_1000279608.jpg",
     "repo_name": "jimong-images-v2"
+  },
+  {
+    "id": 1781673250106,
+    "parent": "佛佛裁決",
+    "child": "底層邏輯",
+    "grand": "直男高管與隨從",
+    "prompt": "讓文科生去當直男高層，然後讓體育生去當直男隨從",
+    "image_name": "1781673239284_1000279610.png",
+    "repo_name": "jimong-images-v2"
   }
 ]
