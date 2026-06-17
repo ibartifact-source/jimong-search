@@ -2664,5 +2664,14 @@
     "prompt": "",
     "image_name": "1781668193740_1000279753.png",
     "repo_name": "jimong-images-v2"
+  },
+  {
+    "id": 1781668293133,
+    "parent": "神的後花園",
+    "child": "美國LLC 公司",
+    "grand": "稅務",
+    "prompt": "",
+    "image_name": "1781668283492_1000279752.png",
+    "repo_name": "jimong-images-v2"
   }
 ]
