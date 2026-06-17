@@ -2889,5 +2889,14 @@
     "prompt": "",
     "image_name": "1781671404158_1000279637.png",
     "repo_name": "jimong-images-v2"
+  },
+  {
+    "id": 1781671609160,
+    "parent": "神的機能飲料",
+    "child": "日本子公司",
+    "grand": "醇濃原萃_乳酸菌發酵飲",
+    "prompt": "",
+    "image_name": "1781671598383_1000279636.png",
+    "repo_name": ""
   }
 ]
