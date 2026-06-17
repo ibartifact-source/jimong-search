@@ -2700,5 +2700,14 @@
     "prompt": "",
     "image_name": "1781668587512_1000279749.png",
     "repo_name": "jimong-images-v2"
+  },
+  {
+    "id": 1781668729532,
+    "parent": "神的機能飲料",
+    "child": "美國LLC 公司",
+    "grand": "稅務",
+    "prompt": "",
+    "image_name": "1781668720373_1000279748.png",
+    "repo_name": "jimong-images-v2"
   }
 ]
