@@ -3061,5 +3061,14 @@
     "prompt": "6/19端午節的時候設計的",
     "image_name": "1781833680453_1000280338.png",
     "repo_name": "jimong-images-v2"
+  },
+  {
+    "id": 1781836973302,
+    "parent": "神的機能飲料",
+    "child": "半自動生產線",
+    "grand": "製程設備",
+    "prompt": "",
+    "image_name": "1781836958488_1000280341.png",
+    "repo_name": "jimong-images-v2"
   }
 ]
