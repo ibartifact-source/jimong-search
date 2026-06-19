@@ -3106,5 +3106,14 @@
     "prompt": "",
     "image_name": "1781838310299_1000280343.png",
     "repo_name": "jimong-images-v2"
+  },
+  {
+    "id": 1781839644687,
+    "parent": "神的機能飲料",
+    "child": "半自動生產線",
+    "grand": "製程設備",
+    "prompt": "",
+    "image_name": "1781839639029_1000280348.jpg",
+    "repo_name": "jimong-images-v2"
   }
 ]
