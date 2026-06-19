@@ -3106,5 +3106,14 @@
     "prompt": "",
     "image_name": "1781838310299_1000280343.png",
     "repo_name": "jimong-images-v2"
+  },
+  {
+    "id": 1781862110204,
+    "parent": "神的機能飲料",
+    "child": "台灣子公司",
+    "grand": "水果胜肽",
+    "prompt": "",
+    "image_name": "1781862100059_1000280363.png",
+    "repo_name": "jimong-images-v2"
   }
 ]
