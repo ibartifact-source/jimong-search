@@ -3313,5 +3313,14 @@
     "prompt": "演員出臉蛋，替身出身體，後續演員自己會好好的鍛鍊身體然後他也可以去當其他演員的替身",
     "image_name": "1782269294985_fd19e1c9-13a6-41dd-bdcf-d93b0132511c-1_all_665.png",
     "repo_name": "jimong-images-v2"
+  },
+  {
+    "id": 1782269386204,
+    "parent": "佛佛的跨國事業體",
+    "child": "日本子公司",
+    "grand": "成人事業體",
+    "prompt": "",
+    "image_name": "1782269374961_fd19e1c9-13a6-41dd-bdcf-d93b0132511c-1_all_664.png",
+    "repo_name": "jimong-images-v2"
   }
 ]
