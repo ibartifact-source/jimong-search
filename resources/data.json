@@ -3376,5 +3376,14 @@
     "prompt": "直男大了可能會離開一號，但也可能後續離婚了帶著孩子回到一號這裡想被一號照顧",
     "image_name": "1782270215001_fd19e1c9-13a6-41dd-bdcf-d93b0132511c-1_all_656.png",
     "repo_name": "jimong-images-v2"
+  },
+  {
+    "id": 1782270328614,
+    "parent": "佛佛的跨國事業體",
+    "child": "日本子公司",
+    "grand": "成人事業體",
+    "prompt": "海報下的標語是哲學",
+    "image_name": "1782270317999_fd19e1c9-13a6-41dd-bdcf-d93b0132511c-1_all_655.png",
+    "repo_name": "jimong-images-v2"
   }
 ]
