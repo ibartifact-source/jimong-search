@@ -3439,5 +3439,14 @@
     "prompt": "直男會自己守護自己的利益，跟外面狼群對戰撕咬",
     "image_name": "1782271482355_1000280485.png",
     "repo_name": "jimong-images-v2"
+  },
+  {
+    "id": 1782271538143,
+    "parent": "佛佛裁決",
+    "child": "底層邏輯",
+    "grand": "直男高管與隨從",
+    "prompt": "",
+    "image_name": "1782271531753_1000280486.png",
+    "repo_name": "jimong-images-v2"
   }
 ]
