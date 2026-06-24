@@ -3385,5 +3385,14 @@
     "prompt": "海報下的標語是哲學",
     "image_name": "1782270317999_fd19e1c9-13a6-41dd-bdcf-d93b0132511c-1_all_655.png",
     "repo_name": "jimong-images-v2"
+  },
+  {
+    "id": 1782270448414,
+    "parent": "佛佛的跨國事業體",
+    "child": "日本子公司",
+    "grand": "成人事業體",
+    "prompt": "佛佛安排好的劇本流程",
+    "image_name": "1782270439486_fd19e1c9-13a6-41dd-bdcf-d93b0132511c-1_all_654.png",
+    "repo_name": "jimong-images-v2"
   }
 ]
