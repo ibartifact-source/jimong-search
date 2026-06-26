@@ -3565,5 +3565,14 @@
     "prompt": "📌佛佛：肽皇不需要拆成膠囊模式",
     "image_name": "1782459303629_1000280505.png",
     "repo_name": "jimong-images-v2"
+  },
+  {
+    "id": 1782459364857,
+    "parent": "神的機能飲料",
+    "child": "台灣子公司",
+    "grand": "職人特調",
+    "prompt": "",
+    "image_name": "1782459357090_1000280506.png",
+    "repo_name": "jimong-images-v2"
   }
 ]
