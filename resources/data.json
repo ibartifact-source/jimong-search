@@ -3583,5 +3583,14 @@
     "prompt": "",
     "image_name": "1782459410532_1000280507.png",
     "repo_name": "jimong-images-v2"
+  },
+  {
+    "id": 1782460116754,
+    "parent": "神的機能飲料",
+    "child": "台灣子公司",
+    "grand": "職人特調",
+    "prompt": "",
+    "image_name": "1782460109793_1000280508.png",
+    "repo_name": "jimong-images-v2"
   }
 ]
