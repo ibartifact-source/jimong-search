@@ -3880,5 +3880,14 @@
     "prompt": "可以善用一些碳水攝取來讓身體有體能做健身",
     "image_name": "1783133466164_1000280631.png",
     "repo_name": "jimong-images-v2"
+  },
+  {
+    "id": 1783133507627,
+    "parent": "健康與健美新生活",
+    "child": "高級玩家",
+    "grand": "健身邏輯",
+    "prompt": "",
+    "image_name": "1783133501195_1000280630.png",
+    "repo_name": "jimong-images-v2"
   }
 ]
