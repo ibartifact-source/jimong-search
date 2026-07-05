@@ -3961,5 +3961,14 @@
     "prompt": "公司比較知名的時候而且錢也比較多的時候就可以用進階版的",
     "image_name": "1783225145648_1000280678.png",
     "repo_name": "jimong-images-v2"
+  },
+  {
+    "id": 1783225191427,
+    "parent": "佛佛的跨國事業體",
+    "child": "日本子公司",
+    "grand": "投資理財",
+    "prompt": "這個是屬於基礎版的",
+    "image_name": "1783225184642_1000280677.png",
+    "repo_name": "jimong-images-v2"
   }
 ]
