@@ -4024,5 +4024,14 @@
     "prompt": "資源共享天堂，如果最後要給全部，那就是拔掉script ，裡面的邏輯，然後用技術規格書給他們讓他們自己去跟Manus 處理，讓manus 先回填技術規格書，然後粉絲自己跟自己的ai確認後，再正式開工",
     "image_name": "1783469036114_1000280699.png",
     "repo_name": "jimong-images-v2"
+  },
+  {
+    "id": 1783489286357,
+    "parent": "神的後花園",
+    "child": "Manvis 系統",
+    "grand": "底層邏輯企劃",
+    "prompt": "",
+    "image_name": "1783489279942_1000280700.png",
+    "repo_name": "jimong-images-v2"
   }
 ]
