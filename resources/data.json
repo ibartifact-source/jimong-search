@@ -4042,5 +4042,14 @@
     "prompt": "複習",
     "image_name": "1783490944614_1000280703.png",
     "repo_name": "jimong-images-v2"
+  },
+  {
+    "id": 1783557303770,
+    "parent": "神的機能飲料",
+    "child": "菲律賓子公司",
+    "grand": "底層邏輯企劃",
+    "prompt": "最後對比一下還是菲律賓比較好",
+    "image_name": "1783557293754_1000280704.png",
+    "repo_name": "jimong-images-v2"
   }
 ]
