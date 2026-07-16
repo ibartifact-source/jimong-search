@@ -4717,5 +4717,15 @@
     "image_name": "1784173181637_1000280738.png",
     "repo_name": "jimong-images-v2",
     "created_at": "2026-07-16 11:39"
+  },
+  {
+    "id": 1784173257599,
+    "parent": "神的機能飲料",
+    "child": "印度子公司",
+    "grand": "底層邏輯企劃",
+    "prompt": "",
+    "image_name": "1784173250623_1000280739.png",
+    "repo_name": "jimong-images-v2",
+    "created_at": "2026-07-16 11:40"
   }
 ]
