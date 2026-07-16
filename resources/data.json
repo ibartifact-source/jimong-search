@@ -4727,5 +4727,15 @@
     "image_name": "1784173250623_1000280739.png",
     "repo_name": "jimong-images-v2",
     "created_at": "2026-07-16 11:40"
+  },
+  {
+    "id": 1784246170932,
+    "parent": "神的機能飲料",
+    "child": "底層邏輯",
+    "grand": "出書",
+    "prompt": "書中還要提到這個說明為什麼我們不使用超高溫瞬間滅菌那個是因為載體胜肽的關係",
+    "image_name": "1784246163704_1000280753.jpg",
+    "repo_name": "jimong-images-v2",
+    "created_at": "2026-07-17 07:56"
   }
 ]
