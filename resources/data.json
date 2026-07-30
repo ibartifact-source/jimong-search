@@ -4777,15 +4777,5 @@
     "image_name": "1785398054161_1000281088.png",
     "repo_name": "jimong-images-v2",
     "created_at": "2026-07-30 15:54"
-  },
-  {
-    "id": 1785400812845,
-    "parent": "未來計畫",
-    "child": "底層邏輯",
-    "grand": "注意事項",
-    "prompt": "",
-    "image_name": "1785400808178_fd19e1c9-13a6-41dd-bdcf-d93b0132511c-1_all_28658.jpg",
-    "repo_name": "jimong-images-v2",
-    "created_at": "2026-07-30 16:40"
   }
 ]
